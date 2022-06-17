@@ -97,3 +97,33 @@ class Post(models.Model):
     def search_post(cls, search_term):
         return cls.objects.filter(title__icontains=search_term).all()
 
+class Business(models.Model):
+    name=models.CharField(max_length=50)
+    phone = models.CharField(max_length=50)
+    start_day = models.CharField(max_length=50)
+    end_day = models.CharField(max_length=50)
+    open_time = models.CharField(max_length=50)
+    close_time = models.CharField(max_length=50)
+    bs_image = CloudinaryField('images', default='image/upload/v1627341811/company_default_qb4ili.png')
+
+    user=models.ForeignKey(Profile, on_delete=models.CASCADE) 
+    neighborhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+    
+    def create_business(self):
+        self.save()
+
+    def delete_business(self):
+        self.delete()
+
+    @classmethod
+    def find_business(cls, business_id):
+        return cls.objects.filter(id=business_id)
+
+    @classmethod
+    def update_business(cls,id,name):
+        update = cls.objects.filter(id=id).update(name=name)
+        return update       
+
